@@ -1,0 +1,23 @@
+[project]
+name = "aipocket"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "alembic>=1.14.0",
+    "fastapi[standard]>=0.115.6",
+    "psycopg2-binary>=2.9.10",
+    "python-dotenv>=1.0.1",
+    "sqlalchemy>=2.0.36",
+    "sqlmodel>=0.0.22",
+    "supabase>=2.10.0",
+]
+
+[tool.ruff]
+extend-exclude = ["*.ipynb"]
+include = ["app/**.py"]
+
+[tool.ruff.lint]
+ignore = ["E721", "E731"]
+extend-select = ["I"]
