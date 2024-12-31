@@ -4,6 +4,20 @@ from uuid import UUID
 
 from sqlmodel import Field, Relationship, SQLModel
 
+# SQLModel requires to define a Model for each scheme. As we want
+# to reference to the auth.user table in the public scheme
+# we define it here.
+
+
+# Note that the real table holds more columns than expressed here,
+# but we only need the id column for the reference.
+# This table will also be skipped during alembic autogeneration.
+class AuthSchemeModel(SQLModel, table=True):
+    __tablename__ = "users"
+    __table_args__ = {"schema": "auth"}
+
+    id: UUID = Field(default=None, primary_key=True)
+
 
 class Bookmark(SQLModel, table=True):
     __tablename__ = "bookmark"
@@ -42,7 +56,7 @@ class Folder(SQLModel, table=True):
 class User(SQLModel, table=True):
     __tablename__ = "user"
 
-    id: UUID = Field(default=None, primary_key=True)
+    id: UUID = Field(default=None, primary_key=True, foreign_key="auth.users.id")
 
     is_active: bool = True
     created_at: datetime = Field(default=datetime.now)
