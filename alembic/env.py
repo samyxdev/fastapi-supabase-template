@@ -7,8 +7,7 @@ from sqlalchemy import create_engine
 from sqlmodel import SQLModel
 
 from alembic import context
-
-# from app.db.models import *  # noqa
+from app.db.models import *  # noqa
 
 sys.path.append(os.path.join(os.getcwd(), "app"))
 

@@ -9,8 +9,7 @@ class BookmarkCreate(BaseModel):
     desc: Optional[str] = None
     is_ticked: bool = False
     content_type: Optional[str] = None
-    folder_id: UUID
-    user_id: UUID
+    folder_id: Optional[UUID] = None
 
 
 class BookmarkUpdate(BaseModel):
