@@ -47,6 +47,7 @@ class Folder(SQLModel, table=True):
     name: str
     desc: Optional[str] = None
     color: Optional[str] = None
+    parent_folder: Optional[UUID] = Field(foreign_key="folder.id", nullable=True)
 
     user_id: UUID = Field(default=uuid4(), foreign_key="user.id")
     created_at: datetime = Field(default_factory=datetime.now)

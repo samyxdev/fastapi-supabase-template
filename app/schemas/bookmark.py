@@ -13,6 +13,8 @@ class BookmarkCreate(BaseModel):
 
 
 class BookmarkUpdate(BaseModel):
+    id: UUID
+
     url: Optional[str] = None
     desc: Optional[str] = None
     is_ticked: Optional[bool] = None
