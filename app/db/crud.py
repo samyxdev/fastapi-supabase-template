@@ -1,3 +1,4 @@
+from typing import List
 from uuid import UUID
 
 from fastapi import HTTPException
@@ -58,3 +59,9 @@ def get_folder_by_id(db: Session, folder_id: UUID, user_id: UUID) -> Folder:
     if not db_folder:
         raise HTTPException(status_code=404, detail="Folder not found")
     return db_folder
+
+
+def get_folders(db: Session, user_id: UUID) -> List[Folder]:
+    """Returns all folders for a user."""
+    folders = db.exec(select(Folder).where(Folder.user_id == user_id)).all()
+    return folders
