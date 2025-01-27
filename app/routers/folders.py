@@ -10,10 +10,10 @@ from ..schemas.folder import FolderCreate, FolderUpdate
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter()
+router = APIRouter(tags=["folders"])
 
 
-@router.post("/create/")
+@router.post("/folder/create/")
 def create(folder: FolderCreate, db: DBSessionDependency, user: UserDependency):
     try:
         db.add(Folder(**folder.model_dump(), user_id=user.id))
@@ -24,7 +24,7 @@ def create(folder: FolderCreate, db: DBSessionDependency, user: UserDependency):
     return {"message": "Folder created successfully", "data": folder}
 
 
-@router.put("/update/{folder_id}")
+@router.put("/folder/update/{folder_id}")
 def update(
     folder_id: UUID,
     folder_update: FolderUpdate,
@@ -38,7 +38,7 @@ def update(
     return updated_folder
 
 
-@router.delete("/delete/{folder_id}")
+@router.delete("/folder/delete/{folder_id}")
 def delete(folder_id: UUID, db: DBSessionDependency, user: UserDependency):
     db_folder = get_folder_by_id(db, folder_id, user_id=user.id)
     if db_folder is None:

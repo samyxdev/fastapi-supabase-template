@@ -21,3 +21,8 @@ include = ["app/**.py"]
 [tool.ruff.lint]
 ignore = ["E721", "E731"]
 extend-select = ["I"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.4",
+]

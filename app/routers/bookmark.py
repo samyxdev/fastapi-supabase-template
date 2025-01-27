@@ -10,10 +10,10 @@ from ..schemas.bookmark import BookmarkCreate, BookmarkUpdate
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter()
+router = APIRouter(tags=["bookmarks"])
 
 
-@router.post("/create/", tags=["bookmarks"])
+@router.post("/create/")
 def create_bookmark(
     bookmark: BookmarkCreate, db: DBSessionDependency, user: UserDependency
 ):
@@ -26,7 +26,7 @@ def create_bookmark(
     return {"message": "Bookmark created successfully", "data": bookmark}
 
 
-@router.put("/bookmark/{bookmark_id}", tags=["bookmarks"])
+@router.put("/bookmark/{bookmark_id}")
 def update_bookmark(
     bookmark_id: UUID,
     bookmark_update: BookmarkUpdate,
@@ -37,7 +37,7 @@ def update_bookmark(
     return update_db_element(db, db_bookmark, bookmark_update)
 
 
-@router.delete("/bookmark/{bookmark_id}", tags=["bookmarks"])
+@router.delete("/bookmark/{bookmark_id}")
 def delete_bookmark(bookmark_id: UUID, db: DBSessionDependency, user: UserDependency):
     db_bookmark = get_bookmark_by_id(db=db, bookmark_id=bookmark_id, user_id=user.id)
 

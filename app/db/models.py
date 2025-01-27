@@ -16,13 +16,13 @@ class AuthSchemeModel(SQLModel, table=True):
     __tablename__ = "users"
     __table_args__ = {"schema": "auth"}
 
-    id: UUID = Field(default=uuid4(), primary_key=True)
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
 
 
 class Bookmark(SQLModel, table=True):
     __tablename__ = "bookmark"
 
-    id: UUID = Field(default=uuid4(), primary_key=True)
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
 
     url: str
     desc: Optional[str] = None
@@ -42,14 +42,14 @@ class Bookmark(SQLModel, table=True):
 class Folder(SQLModel, table=True):
     __tablename__ = "folder"
 
-    id: UUID = Field(default=uuid4(), primary_key=True)
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
 
     name: str
     desc: Optional[str] = None
     color: Optional[str] = None
     parent_folder: Optional[UUID] = Field(foreign_key="folder.id", nullable=True)
 
-    user_id: UUID = Field(default=uuid4(), foreign_key="user.id")
+    user_id: UUID = Field(default_factory=uuid4, foreign_key="user.id")
     created_at: datetime = Field(default_factory=datetime.now)
 
     user: "User" = Relationship(back_populates="folders")
@@ -59,7 +59,9 @@ class Folder(SQLModel, table=True):
 class User(SQLModel, table=True):
     __tablename__ = "user"
 
-    id: UUID = Field(default=uuid4(), primary_key=True, foreign_key="auth.users.id")
+    id: UUID = Field(
+        default_factory=uuid4, primary_key=True, foreign_key="auth.users.id"
+    )
 
     is_active: bool = True
     created_at: datetime = Field(default_factory=datetime.now)
