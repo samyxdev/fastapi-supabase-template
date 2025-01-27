@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel
 from sqlmodel import Session, SQLModel, select
 
+from ..schemas.folder import FolderContent
 from .models import Bookmark, Folder
 
 ######################################################
@@ -51,14 +52,15 @@ def get_bookmark_by_id(db: Session, bookmark_id: UUID, user_id: UUID) -> Bookmar
     return db_bookmark
 
 
-def get_folder_by_id(db: Session, folder_id: UUID, user_id: UUID) -> Folder:
-    """Returns a folder by id."""
+def get_folder_by_id(db: Session, folder_id: UUID, user_id: UUID) -> FolderContent:
+    """Returns a folder and its content by id."""
     db_folder = db.exec(
         select(Folder).where(Folder.id == folder_id, Folder.user_id == user_id)
     ).first()
     if not db_folder:
         raise HTTPException(status_code=404, detail="Folder not found")
-    return db_folder
+
+    return FolderContent(folder=db_folder, bookmarks=db_folder.bookmarks)
 
 
 def get_folders(db: Session, user_id: UUID) -> List[Folder]:

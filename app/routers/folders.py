@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException
 from ..db import crud
 from ..db.models import Folder
 from ..dependencies import DBSessionDependency, UserDependency
-from ..schemas.folder import FolderCreate, FolderUpdate
+from ..schemas.folder import FolderContent, FolderCreate, FolderUpdate
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,10 @@ def get_folders(db: DBSessionDependency, user: UserDependency):
 
 
 @router.get("/folder/{folder_id}")
-def get_folder(folder_id: UUID, db: DBSessionDependency, user: UserDependency):
+def get_folder(
+    folder_id: UUID, db: DBSessionDependency, user: UserDependency
+) -> FolderContent:
+    """Return a folder and its content by id."""
     db_folder = crud.get_folder_by_id(db, folder_id, user_id=user.id)
     if db_folder is None:
         raise HTTPException(status_code=404, detail="Folder not found")
