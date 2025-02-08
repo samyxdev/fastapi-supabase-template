@@ -7,8 +7,10 @@ This is a minimal template for a FastAPI project with Supabase, SQLModel and Ale
 - FastAPI for building APIs
 - Supabase for authentication and database
 - SQLModel for ORM
-- Alembic for database migrations
+- Alembic for database versionning and migrations
 - uv for dependency management
+
+The project features a basic example of a bookmark application, supporting CRUD operations with Supabase authentication (including compatibility with Swagger's Auth).
 
 ## Installation
 
@@ -18,16 +20,12 @@ This is a minimal template for a FastAPI project with Supabase, SQLModel and Ale
     cd aipocket
     ```
 
-2. Create and activate a virtual environment:
+2. Install UV:
     ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    pip install uv
     ```
-
-3. Install the dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+    You don't have to do that in a virtual environment, as UV is a standalone tool.
+    UV will later on install the dependencies for you in a virtual environnement.
 
 ## Usage
 
@@ -38,17 +36,23 @@ This is a minimal template for a FastAPI project with Supabase, SQLModel and Ale
 
     Update the `.env` file with your Supabase URL, Supabase key, database URL, and database URL for migrations.
 
-2. Run the database migrations:
+2. (Optional) In case you perform modifications to `models.py` (ie. modification to the DB scheme): Generate a new Alembic migration:
     ```bash
-    alembic upgrade head
+    uv run alembic revision --autogenerate -m "Your message here"
     ```
 
-3. Start the FastAPI server:
+3. Run the database migrations:
     ```bash
-    fastapi dev app/main.py
+    uv run alembic upgrade head
     ```
 
-4. Access the API documentation at `http://127.0.0.1:8000/docs`.
+4. Start the FastAPI server:
+    ```bash
+    uv run uvicorn app.main:app --reload --reload-dir app
+    ```
+    At the first run, UV will create a virtual environment and install the dependencies inside it.
+
+5. Access the API documentation at `http://127.0.0.1:8000/docs`.
 
 ## Contributing
 
